@@ -1,0 +1,35 @@
+---
+- hosts: backend:frontend  # target hosts from these two groups
+  name: fetch, build and run time_printer
+  remote_user: nkosl
+
+  tasks:
+  - name: ensure git, make and gcc are installed
+    apt:
+      name: [git, make, gcc]
+      state: present
+    become: true
+
+  - name: pull any changes to time_printer from git
+    git:
+      repo: https://github.com/LVH-27/time_printer
+      dest: ~/time_printer
+
+  - name: build time_printer using make
+    make:
+      chdir: ~/time_printer
+      target: build
+
+  - name: run time_printer to log the current time
+    shell:
+      chdir: ~/time_printer
+      cmd: ./time_printer >> time_printer.log
+
+  - name: tail the log file to check if everything went as expected
+    shell:
+      cmd: cat ~/time_printer/time_printer.log
+    register: result
+
+  - name: output
+    debug:
+      var: result.stdout_lines
