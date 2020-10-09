@@ -1,5 +1,7 @@
 [clock]
-localhost
+www.mydomain.org
+dev.mydomain.org http_port=8080
 
 [all:vars]
+ansible_user=clock
 ansible_python_interpreter=/usr/bin/python
