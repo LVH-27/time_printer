@@ -1,7 +1,7 @@
 ---
-- hosts: backend:frontend  # target hosts from these two groups
-  name: fetch, build and run time_printer
-  remote_user: nkosl
+- hosts: clock
+  name: fetch and run time_printer
+  remote_user: <username> 
 
   tasks:
   - name: ensure git is installed
