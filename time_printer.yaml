@@ -4,9 +4,9 @@
   remote_user: nkosl
 
   tasks:
-  - name: ensure git, make and gcc are installed
+  - name: ensure git is installed
     apt:
-      name: [git, make, gcc]
+      name: git
       state: present
     become: true
 
@@ -14,16 +14,12 @@
     git:
       repo: https://github.com/LVH-27/time_printer
       dest: ~/time_printer
-
-  - name: build time_printer using make
-    make:
-      chdir: ~/time_printer
-      target: build
+      version: python
 
   - name: run time_printer to log the current time
     shell:
       chdir: ~/time_printer
-      cmd: ./time_printer >> time_printer.log
+      cmd: python time_printer.py >> time_printer.log
 
   - name: tail the log file to check if everything went as expected
     shell:
